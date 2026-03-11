@@ -153,7 +153,7 @@
         const t = await res.text();
         setMsg(msg, t, t.toLowerCase().includes('success') || t.toLowerCase().includes('register'));
         if(t.toLowerCase().includes('success')){
-          window.location.href = 'login.html';
+          window.location.href = 'login.htm';
         }
       }catch(e){ setMsg(msg, 'Network error'); }
     }
@@ -173,7 +173,7 @@
         const t = await res.text();
         if(t.toLowerCase().includes('success')){
           localStorage.setItem('loggedIn', 'true');
-          window.location.href = 'site.html';
+          window.location.href = 'site.htm';
         } else {
           setMsg(msg, t, false);
         }
