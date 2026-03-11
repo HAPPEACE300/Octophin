@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Auth Form</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card: #111827;
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --border: #1f2937;
+      --success: #16a34a;
+      --error: #dc2626;
+      --radius: 16px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      background: radial-gradient(1200px 600px at 10% 10%, #1e293b 0%, var(--bg) 60%);
+      color: var(--text);
+      display: grid;
+      place-items: center;
+      min-height: 100vh;
+      padding: 24px;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 420px;
+      background: linear-gradient(180deg, #0b1220 0%, var(--card) 100%);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      box-shadow: 0 20px 60px rgba(0,0,0,.45);
+    }
+
+    .title {
+      font-size: 22px;
+      font-weight: 600;
+      margin: 0 0 6px;
+      letter-spacing: .2px;
+    }
+
+    .subtitle {
+      margin: 0 0 22px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      background: #0b1220;
+      padding: 6px;
+      border-radius: 999px;
+      margin-bottom: 22px;
+      border: 1px solid var(--border);
+    }
+
+    .tab {
+      border: none;
+      padding: 10px 0;
+      border-radius: 999px;
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .tab.active {
+      background: var(--primary);
+      color: white;
+    }
+
+    .form { display: none; }
+    .form.active { display: block; }
+
+    .field { margin-bottom: 16px; }
+
+    label {
+      display: block;
+      font-size: 13px;
+      margin-bottom: 6px;
+      color: var(--muted);
+    }
+
+    input {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: #0b1220;
+      color: var(--text);
+      outline: none;
+      transition: border .2s, box-shadow .2s;
+    }
+
+    input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37,99,235,.25);
+    }
+
+    .btn {
+      width: 100%;
+      padding: 12px;
+      border-radius: 12px;
+      border: none;
+      background: var(--primary);
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background .2s, transform .04s;
+      margin-top: 6px;
+    }
+
+    .btn:hover { background: var(--primary-hover); }
+    .btn:active { transform: translateY(1px); }
+
+    .msg {
+      margin-top: 14px;
+      font-size: 14px;
+      min-height: 20px;
+    }
+
+    .msg.success { color: var(--success); }
+    .msg.error { color: var(--error); }
+
+    .footer {
+      margin-top: 18px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1 class="title">Welcome To Otophin</h1>
+    <p class="subtitle">Access your account or create a new one</p>
+
+    <div class="tabs">
+      <button class="tab active" id="tabLogin">Login</button>
+      <button class="tab" id="tabRegister">Register</button>
+    </div>
+
+    <!-- LOGIN -->
+    <form class="form active" id="loginForm" onsubmit="event.preventDefault(); login();">
+      <div class="field">
+        <label>Email</label>
+        <input id="lemail" type="email" placeholder="you@example.com" required>
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <input id="lpass" type="password" placeholder="••••••••" required>
+      </div>
+      <button class="btn" type="submit">Sign In</button>
+      <div class="msg" id="loginMsg"></div>
+    </form>
+
+    <!-- REGISTER -->
+    <form class="form" id="registerForm" onsubmit="event.preventDefault(); register();">
+      <div class="field">
+        <label>Username</label>
+        <input id="ruser" placeholder="username" required>
+      </div>
+      <div class="field">
+        <label>Email</label>
+        <input id="remail" type="email" placeholder="you@example.com" required>
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <input id="rpass" type="password" placeholder="Create password" required>
+      </div>
+      <button class="btn" type="submit">Create Account</button>
+      <div class="msg" id="registerMsg"></div>
+    </form>
+
+    <div class="footer">Secure authentication demo</div>
+  </div>
+
+  <script>
+    const URL = "https://script.google.com/macros/s/AKfycbwBZxk2LFozFt57pSO9BmQQRPDvKrzjPxNRPIk0RhXYOeTZXtD4OHYIwVw8ortd2yDl/exec";
+
+    const tabLogin = document.getElementById('tabLogin');
+    const tabRegister = document.getElementById('tabRegister');
+    const loginForm = document.getElementById('loginForm');
+    const registerForm = document.getElementById('registerForm');
+
+    tabLogin.onclick = () => switchTab('login');
+    tabRegister.onclick = () => switchTab('register');
+
+    function switchTab(mode) {
+      const isLogin = mode === 'login';
+      tabLogin.classList.toggle('active', isLogin);
+      tabRegister.classList.toggle('active', !isLogin);
+      loginForm.classList.toggle('active', isLogin);
+      registerForm.classList.toggle('active', !isLogin);
+    }
+
+    function setMsg(el, text, ok=false){
+      el.textContent = text;
+      el.className = 'msg ' + (ok ? 'success' : 'error');
+    }
+
+    async function register(){
+      const msg = document.getElementById('registerMsg');
+      setMsg(msg, 'Processing...');
+      try{
+        const res = await fetch(URL, {
+          method: 'POST',
+          body: JSON.stringify({
+            action: 'register',
+            username: ruser.value,
+            email: remail.value,
+            password: rpass.value
+          })
+        });
+        const t = await res.text();
+        setMsg(msg, t, t.toLowerCase().includes('success') || t.toLowerCase().includes('register'));
+      }catch(e){ setMsg(msg, 'Network error'); }
+    }
+
+    async function login(){
+      const msg = document.getElementById('loginMsg');
+      setMsg(msg, 'Processing...');
+      try{
+        const res = await fetch(URL, {
+          method: 'POST',
+          body: JSON.stringify({
+            action: 'login',
+            email: lemail.value,
+            password: lpass.value
+          })
+        });
+        const t = await res.text();
+        setMsg(msg, t, t.toLowerCase().includes('success'));
+      }catch(e){ setMsg(msg, 'Network error'); }
+    }
+  </script>
+</body>
+</html>
